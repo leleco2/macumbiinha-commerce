@@ -4,7 +4,7 @@ import {useEffect,useRef,useState,type FormEvent} from 'react';
 import Link from 'next/link';
 import {ArrowLeft,ArrowRight,CheckCircle2,MessageCircle,ShieldCheck} from 'lucide-react';
 import {useShop} from '@/components/Shop';
-import {products} from '@/data/products';
+
 import {store} from '@/data/store';
 import {createWhatsAppUrl} from '@/lib/whatsapp';
 import {CRM_BASE_URL,type PublicConfig} from '@/lib/crm';
@@ -17,7 +17,7 @@ type TurnstileAPI={
 type WindowWithTurnstile=Window&{turnstile?:TurnstileAPI};
 
 export default function QuoteRequestForm(){
- const {mode,items}=useShop();
+ const {mode,items,catalog:products}=useShop();
  const [config,setConfig]=useState<PublicConfig|null>(null);
  const [state,setState]=useState<'loading'|'ready'|'offline'|'sending'|'sent'>('loading');
  const [token,setToken]=useState('');
@@ -76,7 +76,7 @@ export default function QuoteRequestForm(){
      try{result=await fetch(CRM_BASE_URL+'/api/public/lead',{
        method:'POST',mode:'cors',headers:{'Content-Type':'application/json'},signal:controller.signal,
        body:JSON.stringify({request_id:requestId.current,name:name.trim(),phone:phone.trim(),email:email.trim(),segment:mode,
-         message:message.trim(),items:choice.map(({item})=>({sku:item.id.toUpperCase(),quantity:item.qty})),consent:true,turnstile_token:token})
+         message:message.trim(),items:choice.map(({item,product})=>({sku:product!.sku||item.id.toUpperCase(),quantity:item.qty})),consent:true,turnstile_token:token})
      })}finally{clearTimeout(timer)}
      const data=await result.json() as {error?:string};
      if(!result.ok)throw new Error(data.error||'Não foi possível enviar a solicitação.');
