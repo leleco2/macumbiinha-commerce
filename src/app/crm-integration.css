@@ -1,0 +1,73 @@
+/* Macumbiinha ↔ CRM bridge: progressive stock display + consent-based quote. */
+.crm-availability {display:flex;align-items:flex-start;flex-direction:column;gap:8px;padding:13px 15px;margin:15px 0 18px;background:#eaf0e4;border:1px solid #d0dfcd;border-radius:4px}
+.crm-availability>span {display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:750;color:#2f6642}
+.crm-availability>span i {height:8px;width:8px;display:inline-block;background:#37864d;border-radius:50%;box-shadow:0 0 0 3px #37864d17}
+.crm-availability>span.is-unavailable {color:#94564b}
+.crm-availability>span.is-unavailable i {background:#b97560;box-shadow:0 0 0 3px #b975601e}
+.crm-availability>strong {font-size:16px;letter-spacing:-.04em}
+.crm-availability>small {font-size:10px;line-height:1.6;color:#647368}
+.crm-availability.is-compact {background:transparent;border:0;padding:0 0 8px;margin:5px 0 0}
+.crm-availability.is-compact>span {font-size:10px}
+.crm-availability.is-compact>span i {height:6px;width:6px}
+.crm-quote-link {display:flex;width:100%;justify-content:space-between;margin-bottom:11px;background:#e7f2d2;color:#1c422d;border:1px solid #c2d69e}
+.crm-quote-link:hover {background:#d8eab8;color:#173b26}
+.crm-product-quote-link {width:100%;margin-top:11px;background:#e7f2d2;color:#1c422d}
+.crm-product-quote-link:hover {background:#d8eab8;color:#1c422d}
+.crm-request-page {padding-bottom:90px}
+.crm-request-grid {display:grid;grid-template-columns:.95fr 1fr;gap:7%;align-items:start;padding:20px 0 80px}
+.crm-request-intro {padding:34px 0}
+.crm-request-intro .eyebrow {color:#67806e}
+.crm-request-intro h1 {font-size:clamp(43px,5vw,72px);letter-spacing:-.065em;line-height:1.07;margin:22px 0}
+.crm-request-intro h1 em {font-family:Georgia,serif;font-weight:400;color:#557b59}
+.crm-request-intro>p {font-size:14px;color:#69786a;max-width:465px;line-height:1.9}
+.crm-request-summary {margin:38px 0;padding:22px;background:#e8eee4;border:1px solid #d6ddd2;border-radius:5px}
+.crm-request-summary .eyebrow {margin-bottom:15px}
+.crm-request-summary>p {font-size:12px;line-height:1.8;color:#5b6b5f}
+.crm-request-summary a {text-decoration:underline;text-underline-offset:3px}
+.crm-request-item {display:flex;justify-content:space-between;align-items:baseline;gap:17px;padding:13px 0;border-top:1px solid #ced7c7;font-size:12px;line-height:1.5}
+.crm-request-item strong {font-size:11px;white-space:nowrap}
+.crm-request-panel {background:#fffefa;border:1px solid #d7ddd3;border-radius:6px;box-shadow:0 12px 46px #2b49340b;padding:39px}
+.crm-request-panel .eyebrow {color:#6a826b}
+.crm-request-panel h2 {font-size:30px;letter-spacing:-.045em;font-weight:700;margin:13px 0 25px}
+.crm-request-form {display:flex;flex-direction:column;gap:18px}
+.crm-request-fields {display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.crm-request-form label {display:flex;flex-direction:column;gap:9px;font-size:12px;font-weight:700}
+.crm-request-form label>span {color:#548653}
+.crm-request-form label input:not([type=checkbox]),.crm-request-form textarea {width:100%;padding:14px 15px;font-size:13px;line-height:1.5;background:#fff;border:1px solid #cbd6cb;border-radius:4px;color:#233829;min-height:49px;outline:none}
+.crm-request-form label input:focus,.crm-request-form textarea:focus {border-color:#648666;box-shadow:0 0 0 3px #759e7028}
+.crm-request-form textarea {resize:vertical;min-height:125px}
+.crm-request-form label.crm-consent {display:grid;grid-template-columns:20px 1fr;align-items:start;gap:12px;font-size:11px;font-weight:500;line-height:1.65;color:#5a685c}
+.crm-consent input {height:17px;width:17px;margin:2px 0 0;accent-color:#315a3c}
+.crm-consent span {color:#526356!important}
+.crm-turnstile {min-height:65px;max-width:100%;overflow:visible}
+.crm-submit {width:100%;justify-content:space-between;min-height:52px}
+.crm-submit:disabled {opacity:.48;cursor:not-allowed;transform:none}
+.crm-request-error {background:#fff0ee;border:1px solid #c98d85;padding:12px;font-size:12px;color:#863e38;line-height:1.6;border-radius:3px}
+.crm-request-disclaimer,.crm-bridge-note {font-size:11px;color:#6d7d6c;line-height:1.7;margin:0}
+.crm-bridge-offline {display:flex;align-items:flex-start;flex-direction:column;gap:15px;padding:25px;border-radius:4px;background:#edf1e8}
+.crm-bridge-offline svg {color:#47694b}
+.crm-bridge-offline h3 {font-size:18px;letter-spacing:-.02em;margin:0}
+.crm-bridge-offline p {font-size:12px;line-height:1.8;color:#667367}
+.crm-bridge-offline .button {font-size:12px}
+.crm-request-feedback {display:flex;flex-direction:column;align-items:flex-start;gap:16px;padding:20px 0}
+.crm-request-feedback svg {color:#4b8050}
+.crm-request-feedback h2 {font-size:30px;margin:0}
+.crm-request-feedback p {font-size:13px;line-height:1.85;color:#69786a}
+@media(max-width:950px) {
+ .crm-request-grid {gap:30px}
+ .crm-request-panel {padding:28px}
+ .crm-request-intro h1 {font-size:50px}
+}
+@media(max-width:650px) {
+ .crm-request-page {padding-bottom:44px}
+ .crm-request-grid {grid-template-columns:1fr;padding:4px 0 40px;gap:25px}
+ .crm-request-intro {padding:12px 0}
+ .crm-request-intro h1 {font-size:43px;margin:20px 0}
+ .crm-request-summary {margin:22px 0;padding:18px}
+ .crm-request-panel {padding:25px 21px}
+ .crm-request-panel h2 {font-size:27px}
+ .crm-request-fields {grid-template-columns:1fr}
+ .crm-request-form {gap:15px}
+ .crm-availability>strong {font-size:14px}
+ .crm-product-quote-link {font-size:12px}
+}
