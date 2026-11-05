@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ShopProvider } from "@/components/Shop";
 
 export const metadata: Metadata = {
   title: "Macumbiinha | Tabacaria Premium",
@@ -24,11 +25,9 @@ export default function RootLayout({
     <html lang="pt-BR">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#059669" />
+        <meta name="theme-color" content="#283e2c" />
       </head>
-      <body className="antialiased bg-neutral-950 text-neutral-100">
-        {children}
-      </body>
+      <body><a className="skip-link" href="#conteudo">Pular para o conteúdo</a><ShopProvider>{children}</ShopProvider></body>
     </html>
   );
 }

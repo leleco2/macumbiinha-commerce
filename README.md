@@ -1,57 +1,43 @@
-# Macumbiinha — Tabacaria Premium
+# Macumbiinha
 
-E-commerce profissional com suporte a **Varejo** e **Atacado/Revenda**.
+Catálogo em Next.js 15, React 19 e TypeScript, exportado estaticamente para Cloudflare Pages.
 
-## Stack
+- Site: https://macumbiinha.pages.dev
+- Repositório: https://github.com/leleco2/macumbiinha-commerce
 
-- Next.js 15 (App Router)
-- TypeScript
-- Tailwind CSS
-- Lucide React
+## Desenvolvimento
 
-## Funcionalidades incluídas
-
-- Age Gate (18+)
-- Seletor de perfil (Cliente Final / Lojista)
-- Catálogo com categorias e busca
-- Página de detalhe do produto
-- Botão flutuante e integração WhatsApp
-- Design dark + verde esmeralda
-- Totalmente responsivo
-- Pronto para evoluir com CRM, estoque e pagamentos
-
-## Como rodar localmente
-
-```bash
-cd macumbiinha
-npm install
+```sh
+npm ci
 npm run dev
+npm run build
 ```
 
-Abra http://localhost:3000
+O build gera `out/`. O script de desenvolvimento aceita os parâmetros do ambiente de prévia e os adapta ao Next.js.
+
+## Estrutura
+
+- `/`: apresentação da marca, categorias, destaques, kits, atacado e dúvidas.
+- `/catalogo/`: busca, ordenação e paginação (8 itens por página).
+- `/categoria/[slug]/`: páginas próprias para as sete categorias.
+- `/produto/[id]/`: detalhes, seleção e produtos relacionados.
+- `/sobre/`, `/atacado/`, `/atendimento/`, `/informacoes/`, `/privacidade/`: informações institucionais.
+
+O seletor varejo/atacado persiste no navegador. A seleção aceita quantidades e pode ser copiada; não é checkout e não reserva estoque.
+
+## Produtos e fotos
+
+Edite `src/data/products.ts`. Coloque fotos reais em `public/produtos/` e defina `image: "/produtos/nome.webp"` no produto. Sem foto, o site exibe uma ilustração identificada como representativa da categoria.
+
+## Dados da empresa
+
+Preencha `src/data/store.ts` com WhatsApp (DDI + DDD + número), e-mail, razão social, CNPJ e endereço verificados. Sem WhatsApp, o site não envia visitantes para números de exemplo. Revise as informações comerciais e de privacidade antes de habilitar vendas.
 
 ## Publicação
 
-- Repositório: https://github.com/leleco2/macumbiinha-commerce
-- Site: https://macumbiinha.pages.dev
-- Build: `npm ci && npm run build`
-- Diretório publicado: `out`
+Projeto Cloudflare Pages `macumbiinha`, conta da loja, branch `main`, diretório `out/`.
+A publicação usa upload direto. A integração Git da conta retornou erro 8000011; commits no GitHub não geram deploy automático.
 
-As páginas de produtos são geradas estaticamente a partir de `src/data/products.ts`.
-O projeto Cloudflare Pages usa upload direto. A integração Git da conta retornou erro 8000011; novos commits não publicam automaticamente.
-Para atualizar, execute o build e publique `out` no projeto `macumbiinha`.
+## Limites atuais
 
-## Personalizações importantes
-
-- **Número do WhatsApp**: Altere em `src/app/page.tsx` e `src/app/produto/[id]/page.tsx` (procure por 5511999999999)
-- **Logo**: Substitua o texto pelo seu logo quando tiver
-- **Produtos**: Edite `src/data/products.ts`
-- **Cores**: Ajuste em `tailwind.config.ts` (brand)
-
-## Próximos passos sugeridos
-
-1. Colocar imagens reais dos produtos
-2. Conectar com sistema de estoque / CRM
-3. Área logada de revendedor
-4. Integração de pagamento
-5. SEO e analytics
+Não há pagamento, controle de estoque, login de cliente ou painel administrativo. Preços, frete, condições de atacado e políticas operacionais precisam ser fornecidos pela loja. Nenhuma informação comercial foi inventada para preencher esses campos.

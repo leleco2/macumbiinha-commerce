@@ -3,6 +3,7 @@ export type Product = {
   name: string;
   category: string;
   description: string;
+  image?: string; // Exemplo: /produtos/foto.webp (arquivo em public/produtos)
   tags: string[];
   featured?: boolean;
   forWholesale?: boolean; // true = better for atacado
