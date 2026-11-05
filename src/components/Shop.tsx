@@ -9,7 +9,7 @@ import ProductArt from './ProductArt';
 import {createWhatsAppMessage,createWhatsAppUrl} from '@/lib/whatsapp';
 type Mode='varejo'|'atacado';
 type Item={id:string;qty:number};
-const Context=createContext({mode:'varejo' as Mode,setMode:(_:Mode)=>{},items:[] as Item[],add:(_:string)=>{},openSelection:()=>{},favorites:[] as string[],toggleFavorite:(_:string)=>{}});
+const Context=createContext({mode:'varejo' as Mode,setMode:(_:Mode)=>{},items:[] as Item[],add:(_:string,quantity?:number)=>{},openSelection:()=>{},favorites:[] as string[],toggleFavorite:(_:string)=>{}});
 export const useShop=()=>useContext(Context);
 export function ShopProvider({children}:{children:ReactNode}) {
  const [mode,setModeState]=useState<Mode>('varejo'); const [items,setItems]=useState<Item[]>([]);const [favorites,setFavorites]=useState<string[]>([]);const [ready,setReady]=useState(false); const [drawer,setDrawer]=useState(false);const [age,setAge]=useState(false);const [copied,setCopied]=useState(false);const [notice,setNotice]=useState('');const pathname=usePathname();const dialogRef=useRef<HTMLDialogElement>(null);const ageRef=useRef<HTMLDialogElement>(null);
@@ -21,7 +21,7 @@ export function ShopProvider({children}:{children:ReactNode}) {
  useEffect(()=>{setDrawer(false)},[pathname]);
  useEffect(()=>{if(notice){const t=setTimeout(()=>setNotice(''),2600);return()=>clearTimeout(t)}},[notice]);
  const setMode=(value:Mode)=>{setModeState(value);try{localStorage.setItem('macumbiinha_mode',value)}catch{}setNotice(value==='atacado'?'Você está no atacado. Sua seleção foi mantida.':'Você está no varejo. Sua seleção foi mantida.');};
- const add=(id:string)=>{setItems(old=>old.some(x=>x.id===id)?old.map(x=>x.id===id?{...x,qty:Math.min(999,x.qty+1)}:x):[...old,{id,qty:1}]);setNotice('Produto adicionado à sua seleção.');setCopied(false)};
+ const add=(id:string,quantity=1)=>{if(!products.some(p=>p.id===id))return;const amount=Number.isInteger(quantity)?Math.max(1,Math.min(999,quantity)):1;setItems(old=>old.some(x=>x.id===id)?old.map(x=>x.id===id?{...x,qty:Math.min(999,x.qty+amount)}:x):[...old,{id,qty:amount}]);setNotice(amount===1?'Produto adicionado à sua seleção.':`${amount} unidades adicionadas à sua seleção.`);setCopied(false)};
  const toggleFavorite=(id:string)=>{if(!products.some(p=>p.id===id))return;setFavorites(old=>{const exists=old.includes(id);setNotice(exists?'Produto removido dos salvos.':'Produto salvo para consultar depois.');return exists?old.filter(x=>x!==id):[...old,id]})};
  const selectedProducts=items.map(i=>({name:products.find(p=>p.id===i.id)?.name||i.id,quantity:i.qty}));
  const quote=createWhatsAppMessage(mode,{items:selectedProducts});
