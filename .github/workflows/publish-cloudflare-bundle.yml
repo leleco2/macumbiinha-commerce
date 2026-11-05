@@ -1,4 +1,4 @@
-name: Publicar Macumbiinha na Cloudflare Pages
+name: Compilar e empacotar loja Macumbiinha
 on:
   push:
     branches: [main]
@@ -31,13 +31,6 @@ jobs:
           path: out/
           if-no-files-found: error
           retention-days: 14
-      - name: Publicar atualização no Cloudflare Pages quando autorizado
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: 0c4c6e226af971ccaf0490eff6b90d60
+      - name: Indicar publicação em produção
         run: |
-          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
-            echo "::warning::Deploy não executado: configure o segredo CLOUDFLARE_API_TOKEN em Settings > Secrets and variables > Actions deste repositório."
-            exit 0
-          fi
-          npx --yes wrangler@4 pages deploy out --project-name macumbiinha --branch main --commit-hash "${GITHUB_SHA}"
+          echo "::notice::Build e pacote concluídos. A publicação no Pages é controlada por leleco2/macumbiinha-crm em .github/workflows/deploy-storefront.yml."
