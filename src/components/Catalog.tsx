@@ -6,12 +6,14 @@ import {products,categories} from '@/data/products';
 import {categoryDetails} from '@/data/store';
 import {ProductCard,useShop} from './Shop';
 import ProductArt from './ProductArt';
-const normalize=(s:string)=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+import {searchCatalog} from '@/lib/catalogSearch';
 export default function Catalog({category}:{category?:string}) {
  const {mode,favorites}=useShop();const [onlyFavorites,setOnlyFavorites]=useState(false);const [query,setQuery]=useState('');const [sort,setSort]=useState('featured');const [wholesale,setWholesale]=useState(false);const [page,setPage]=useState(1);const [loaded,setLoaded]=useState(false);
  useEffect(()=>{const read=()=>{const q=new URLSearchParams(window.location.search);setQuery(q.get('q')||'');setPage(Math.max(1,Math.floor(Number(q.get('page')))||1));setSort(q.get('sort')==='az'?'az':'featured');setWholesale(q.get('revenda')==='1');setOnlyFavorites(q.get('favoritos')==='1');setLoaded(true)};read();window.addEventListener('popstate',read);return()=>window.removeEventListener('popstate',read)},[category]);
- let filtered=products.filter(p=>(!category||p.category===category)&&(!wholesale||mode!=='atacado'||p.forWholesale)&&(!onlyFavorites||favorites.includes(p.id))&&normalize(p.name+' '+p.description+' '+p.tags.join(' ')).includes(normalize(query)));
- filtered=[...filtered].sort(sort==='az'?(a,b)=>a.name.localeCompare(b.name,'pt-BR'):(a,b)=>Number(!!b.featured)-Number(!!a.featured));
+ let filtered=products.filter(p=>(!category||p.category===category)&&(!wholesale||mode!=='atacado'||p.forWholesale)&&(!onlyFavorites||favorites.includes(p.id)));
+ filtered=searchCatalog(filtered,query,Object.fromEntries(categories.map(c=>[c.id,c.name])));
+ if(sort==='az')filtered=[...filtered].sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
+ else if(!query.trim())filtered=[...filtered].sort((a,b)=>Number(!!b.featured)-Number(!!a.featured));
  const pages=Math.max(1,Math.ceil(filtered.length/8));const current=Math.min(page,pages);const shown=filtered.slice((current-1)*8,current*8);const cat=categories.find(c=>c.id===category);
  useEffect(()=>{if(!loaded)return;const params=new URLSearchParams();if(query)params.set('q',query);if(current>1)params.set('page',String(current));if(sort==='az')params.set('sort',sort);if(wholesale&&mode==='atacado')params.set('revenda','1');if(onlyFavorites)params.set('favoritos','1');const q=params.toString();window.history.replaceState(null,'',window.location.pathname+(q?'?'+q:''));},[query,current,sort,wholesale,mode,onlyFavorites,loaded]);
  const reset=()=>{setQuery('');setWholesale(false);setOnlyFavorites(false);setSort('featured');setPage(1)};
