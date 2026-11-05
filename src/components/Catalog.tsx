@@ -3,7 +3,6 @@ import Link from 'next/link';
 import {useEffect,useState} from 'react';
 import {Search,ArrowRight,ChevronLeft,ChevronRight,SlidersHorizontal,X,Heart} from 'lucide-react';
 import {categories} from '@/data/products';
-import {productHref} from '@/lib/catalogBridge';
 import {categoryDetails} from '@/data/store';
 import {ProductCard,useShop} from './Shop';
 import ProductArt from './ProductArt';
