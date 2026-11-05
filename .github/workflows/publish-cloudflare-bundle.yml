@@ -1,0 +1,42 @@
+name: Preparar bundle Cloudflare Macumbiinha
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-cloudflare-bundle.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do site
+        uses: actions/checkout@v4
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Instalar dependências
+        run: npm ci
+      - name: Testes
+        run: npm test
+      - name: Build estático
+        run: npm run build
+      - name: Publicar artefatos compilados em branch separada
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p /tmp/macumbiinha-cloudflare-build
+          cp -a out/. /tmp/macumbiinha-cloudflare-build/
+          cd /tmp/macumbiinha-cloudflare-build
+          git init -b cloudflare-bundle-20261105
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Static bundle for ${GITHUB_SHA}"
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push origin HEAD:refs/heads/cloudflare-bundle-20261105
