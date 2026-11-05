@@ -71,3 +71,7 @@
  .crm-availability>strong {font-size:14px}
  .crm-product-quote-link {font-size:12px}
 }
+
+/* Live CRM status in the catalog: visible fallback instead of silent stale inventory. */
+.crm-catalog-notice{padding:13px 16px;margin:0 0 17px;border:1px solid #dccfb0;border-radius:9px;background:#fdf8eb;color:#685b38;font-size:12px;line-height:1.65}
+@media(prefers-color-scheme:dark){.crm-catalog-notice{background:#332b18;border-color:#6c5934;color:#e7d7a7}}
