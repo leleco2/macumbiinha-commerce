@@ -75,3 +75,26 @@
 /* Live CRM status in the catalog: visible fallback instead of silent stale inventory. */
 .crm-catalog-notice{padding:13px 16px;margin:0 0 17px;border:1px solid #dccfb0;border-radius:9px;background:#fdf8eb;color:#685b38;font-size:12px;line-height:1.65}
 @media(prefers-color-scheme:dark){.crm-catalog-notice{background:#332b18;border-color:#6c5934;color:#e7d7a7}}
+
+
+/* CRM-driven photo gallery and grouped variation selector */
+.detail-gallery{display:flex;flex-direction:column;align-items:stretch;justify-content:center;min-height:0}
+.detail-gallery-stage{display:grid;place-items:center;min-height:340px;position:relative}
+.detail-gallery-stage .real-product-image{width:100%;height:100%;max-height:500px;object-fit:contain;padding:28px}
+.detail-gallery-stage .product-art{width:100%;max-width:390px}
+.detail-gallery-thumbs{display:flex;gap:9px;padding:13px 16px 17px;justify-content:center;overflow-x:auto}
+.detail-gallery-thumbs button{width:66px;height:66px;flex:0 0 66px;border:2px solid transparent;border-radius:10px;overflow:hidden;background:#fff;opacity:.73;cursor:pointer;padding:0;transition:opacity .2s,border-color .2s}
+.detail-gallery-thumbs button.is-current,.detail-gallery-thumbs button:focus-visible{border-color:#385a3e;opacity:1}
+.detail-gallery-thumbs img{display:block;width:100%;height:100%;object-fit:cover}
+.product-options{margin:19px 0;border:1px solid #d9e3d8;border-radius:14px;padding:17px;background:#f8faf7}
+.option-header{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:13px}
+.option-header strong{font-size:11px;font-weight:800;letter-spacing:.08em;color:#46604a}
+.option-header small{font-size:11px;color:#7c8a7c}
+.option-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.option-list button{min-height:65px;background:white;border:1px solid #d6e0d4;border-radius:9px;padding:11px 12px;text-align:left;cursor:pointer;transition:border-color .2s,box-shadow .2s}
+.option-list button.is-selected,.option-list button:focus-visible{outline:none;border-color:#497c51;box-shadow:0 0 0 2px #497c5130}
+.option-list button strong{display:block;color:#253f2e;font-size:12px}
+.option-list button small{display:block;color:#7a8b7e;font-size:10px;margin-top:6px}
+.option-sku{font-size:10px;color:#657969;margin:10px 0 0}
+.selection-variant{display:block;color:#5f7d66;font-size:11px;margin:3px 0 6px}
+@media(max-width:650px){.option-list{grid-template-columns:1fr 1fr}.detail-gallery-stage{min-height:255px}.detail-gallery-stage .real-product-image{max-height:320px;padding:18px}.detail-gallery-thumbs button{width:56px;height:56px;flex-basis:56px}}

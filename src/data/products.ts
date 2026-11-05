@@ -1,9 +1,15 @@
+export type ProductVariant = {
+ id: string; sku: string; label: string; quantity: number; available: boolean;
+ retail_cents: number; wholesale_cents: number; image_url?: string; gallery?: string[];
+};
 export type Product = {
   id: string;
   name: string;
   category: string;
   description: string;
   image?: string; // Public HTTPS image managed by CRM or local fallback.
+  gallery?: string[];
+  variants?: ProductVariant[];
   sku?: string;
   retail_cents?: number;
   wholesale_cents?: number;

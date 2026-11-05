@@ -45,3 +45,10 @@ O site é compilado por `.github/workflows/publish-cloudflare-bundle.yml`. A **p
 ## Limites atuais
 
 Não há checkout de pagamento automatizado nem emissão fiscal pela SEFAZ. O CRM permite arquivar notas PDF/XML de forma privada, mas não autoriza, transmite ou cancela NF-e. Estoque é movimentado no CRM, e pedidos confirmados no ERP usam os gatilhos já existentes. A cotação pelo site não reserva estoque.
+
+
+## Variações e imagens pelo CRM
+
+Na seção **Loja online** do CRM, abra **Variações** de um produto para cadastrar, por exemplo, tamanhos, cores ou tipos diferentes de seda na mesma ficha. Cada variação tem SKU próprio, preços, quantidade e limite mínimo. A página do produto mostra as opções e alterna o preço, a disponibilidade e as fotos conforme a escolha. O botão de seleção registra o SKU exato, inclusive quando o cliente escolhe duas variações do mesmo produto. As solicitações enviadas ao CRM e a mensagem do WhatsApp preservam a opção.
+
+No CRM, o botão **Fotos** permite enviar até 8 imagens por produto ou variação e escolher a principal; imagens pesadas são redimensionadas antes do upload. Os dados são obtidos ao vivo na API pública sem expor custos, documentos fiscais ou credenciais.

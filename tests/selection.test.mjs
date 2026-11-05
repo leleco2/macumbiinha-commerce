@@ -28,3 +28,16 @@ test('favoritos são únicos, válidos e podem ser alternados', () => {
   assert.deepEqual(toggleSavedItem(saved, 'seda-a'), ['case-b']);
   assert.deepEqual(toggleSavedItem(saved, 'kit-c'), ['seda-a', 'case-b', 'kit-c']);
 });
+
+
+test('variações da mesma seda ficam separadas no carrinho e no armazenamento',()=>{
+ const first=addToSelection([], 'seda-a', 2, 'SEDA-KS');
+ const second=addToSelection(first, 'seda-a', 3, 'SEDA-SLIM');
+ assert.equal(second.length,2);
+ assert.deepEqual(addToSelection(second,'seda-a',1,'SEDA-KS'),[
+  {id:'seda-a',qty:3,variantSku:'SEDA-KS'},
+  {id:'seda-a',qty:3,variantSku:'SEDA-SLIM'}
+ ]);
+ assert.deepEqual(sanitizeSelection(second,allowed),second);
+ assert.deepEqual(sanitizeSelection([{id:'seda-a',qty:2,variantSku:'sku invalido'}],allowed),[]);
+});

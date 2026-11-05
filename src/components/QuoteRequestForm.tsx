@@ -76,7 +76,7 @@ export default function QuoteRequestForm(){
      try{result=await fetch(CRM_BASE_URL+'/api/public/lead',{
        method:'POST',mode:'cors',headers:{'Content-Type':'application/json'},signal:controller.signal,
        body:JSON.stringify({request_id:requestId.current,name:name.trim(),phone:phone.trim(),email:email.trim(),segment:mode,
-         message:message.trim(),items:choice.map(({item,product})=>({sku:product!.sku||item.id.toUpperCase(),quantity:item.qty})),consent:true,turnstile_token:token})
+         message:message.trim(),items:choice.map(({item,product})=>({sku:item.variantSku||product!.sku||item.id.toUpperCase(),quantity:item.qty})),consent:true,turnstile_token:token})
      })}finally{clearTimeout(timer)}
      const data=await result.json() as {error?:string};
      if(!result.ok)throw new Error(data.error||'Não foi possível enviar a solicitação.');
@@ -96,7 +96,7 @@ export default function QuoteRequestForm(){
      <h1>Pronto para dar o <em>próximo passo?</em></h1>
      <p>Compartilhe sua seleção com a equipe. Confirmaremos produtos, preços, estoque e entrega antes de qualquer pagamento.</p>
      <div className="crm-request-summary"><span className="eyebrow">SUA SELEÇÃO · {mode.toUpperCase()}</span>
-       {choice.length?choice.map(({item,product})=><div className="crm-request-item" key={item.id}><span>{product!.name}</span><strong>{item.qty} un.</strong></div>):<p>Você ainda não selecionou produtos. Pode enviar uma mensagem geral ou <Link href="/catalogo/">explorar o catálogo</Link>.</p>}
+       {choice.length?choice.map(({item,product})=><div className="crm-request-item" key={item.id}><span>{product!.name}{item.variantSku&&' · '+(product!.variants?.find(v=>v.sku===item.variantSku)?.label||item.variantSku)}</span><strong>{item.qty} un.</strong></div>):<p>Você ainda não selecionou produtos. Pode enviar uma mensagem geral ou <Link href="/catalogo/">explorar o catálogo</Link>.</p>}
      </div>
      <Link className="text-link" href="/catalogo/"><ArrowLeft size={16}/> Voltar ao catálogo</Link>
     </section>
@@ -105,7 +105,7 @@ export default function QuoteRequestForm(){
        <span className="eyebrow">ATENDIMENTO PERSONALIZADO</span>
        <h2>Conte o que você procura.</h2>
        {state==='loading'&&<p className="crm-bridge-note">Verificando a conexão segura com nosso sistema...</p>}
-       {state==='offline'&&<div className="crm-bridge-offline"><ShieldCheck size={26}/><h3>Formulário online ainda não ativado.</h3><p>O atendimento continua disponível pelo WhatsApp enquanto configuramos a integração segura.</p><a className="button" href={createWhatsAppUrl(siteSettings.whatsapp||store.whatsapp,mode,{items:choice.map(({item,product})=>({name:product!.name,quantity:item.qty}))})} target="_blank" rel="noopener noreferrer"><MessageCircle size={17}/> Conversar pelo WhatsApp</a></div>}
+       {state==='offline'&&<div className="crm-bridge-offline"><ShieldCheck size={26}/><h3>Formulário online ainda não ativado.</h3><p>O atendimento continua disponível pelo WhatsApp enquanto configuramos a integração segura.</p><a className="button" href={createWhatsAppUrl(siteSettings.whatsapp||store.whatsapp,mode,{items:choice.map(({item,product})=>({name:product!.name+(item.variantSku?' · '+(product!.variants?.find(v=>v.sku===item.variantSku)?.label||item.variantSku):''),quantity:item.qty}))})} target="_blank" rel="noopener noreferrer"><MessageCircle size={17}/> Conversar pelo WhatsApp</a></div>}
        {(state==='ready'||state==='sending')&&<form className="crm-request-form" onSubmit={submit}>
         <label>Seu nome <span>*</span><input type="text" value={name} onChange={e=>setName(e.target.value)} required minLength={2} maxLength={120} autoComplete="name" placeholder="Como podemos chamar você?"/></label>
         <div className="crm-request-fields">
