@@ -1,7 +1,7 @@
 name: Build e testes Macumbiinha
 on:
   push:
-    branches: [main, feat/whatsapp-varejo-atacado]
+    branches: [main, feat/whatsapp-varejo-atacado, feat/commerce-hub-20261105]
   pull_request:
     branches: [main]
 
