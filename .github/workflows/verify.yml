@@ -1,0 +1,26 @@
+name: Build e testes Macumbiinha
+on:
+  push:
+    branches: [main, feat/whatsapp-varejo-atacado]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Instalar dependências
+        run: npm ci
+      - name: Testar mensagens do WhatsApp
+        run: npm test
+      - name: Compilar site estático
+        run: npm run build
