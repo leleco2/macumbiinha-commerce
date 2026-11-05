@@ -8,7 +8,7 @@ export function crmToProducts(items:readonly PublicCatalogItem[]):Product[]{
  const existing=new Map(legacyProducts.map(p=>[p.id.toUpperCase(),p]));
  const seen=new Set<string>();
  return items.filter(item=>item&&typeof item.sku==='string'&&typeof item.name==='string')
- .map(item=>{
+ .map((item):Product|null=>{
   const slug=/^[a-z0-9][a-z0-9._-]{1,79}$/.test(item.slug||'')?item.slug:item.sku.toLowerCase();
   if(seen.has(slug))return null;
   seen.add(slug);
