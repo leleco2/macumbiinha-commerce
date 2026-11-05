@@ -2,9 +2,12 @@
 export const CRM_BASE_URL = 'https://macumbiinha-crm.maodeouro-nexa.workers.dev';
 
 export type PublicCatalogItem = {
-  sku: string; name: string; category: string; retail_cents: number;
-  available: boolean; quantity: number;
+  id: string; slug: string; sku: string; name: string; category: string; description: string;
+  tags: string[]; image_url: string; featured: boolean; for_wholesale: boolean;
+  retail_cents: number; wholesale_cents: number; available: boolean; quantity: number;
+  updated_at?: string;
 };
+export type PublicSiteSettings = { announcement: string; hero_title: string; hero_subtitle: string; whatsapp: string };
 export type PublicConfig = {form_enabled: boolean; site_key: string; version?: string};
 let catalogCache: Map<string,PublicCatalogItem> | null = null;
 let lastCatalogFetch=0;
@@ -31,3 +34,15 @@ export async function fetchPublishedCatalog(): Promise<Map<string,PublicCatalogI
 }
 export const toCrmSku=(productId:string)=>productId.toUpperCase();
 export const brl=(cents:number)=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(cents/100);
+
+export async function fetchSiteSettings(): Promise<PublicSiteSettings> {
+ const response=await fetch(CRM_BASE_URL+'/api/public/site',{mode:'cors',cache:'no-store'});
+ if(!response.ok)throw new Error('Configurações da loja indisponíveis');
+ const data=await response.json() as {settings?:Partial<PublicSiteSettings>};
+ return {
+  announcement:String(data.settings?.announcement||''),
+  hero_title:String(data.settings?.hero_title||''),
+  hero_subtitle:String(data.settings?.hero_subtitle||''),
+  whatsapp:String(data.settings?.whatsapp||'')
+ };
+}
