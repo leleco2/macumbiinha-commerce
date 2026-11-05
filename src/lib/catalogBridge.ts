@@ -17,7 +17,7 @@ export function crmToProducts(items:readonly PublicCatalogItem[]):Product[]{
   const category=knownCategories.has(item.category)?item.category:'acessorios';
   return {
    id:slug,sku:item.sku,name:item.name,category,description:item.description||old?.description||'',
-   image,tags:Array.isArray(item.tags)?item.tags.slice(0,8):old?.tags||[],
+   image,gallery:Array.isArray(item.gallery)?item.gallery:[],variants:Array.isArray(item.variants)?item.variants:[],tags:Array.isArray(item.tags)?item.tags.slice(0,8):old?.tags||[],
    featured:!!item.featured,forWholesale:!!item.for_wholesale,
    retail_cents:Number(item.retail_cents)||0,wholesale_cents:Number(item.wholesale_cents)||0,
    quantity:Number(item.quantity)||0,available:!!item.available,source:'crm' as const
