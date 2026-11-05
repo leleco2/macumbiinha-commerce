@@ -7,13 +7,14 @@ import {products,categories,type Product} from '@/data/products';
 import {store,categoryDetails,faqs} from '@/data/store';
 import ProductArt from './ProductArt';
 import {createWhatsAppMessage,createWhatsAppUrl} from '@/lib/whatsapp';
+import {addToSelection,sanitizeSelection,sanitizeFavorites,toggleSavedItem,type SelectionItem} from '@/lib/selection';
 type Mode='varejo'|'atacado';
-type Item={id:string;qty:number};
+type Item=SelectionItem;
 const Context=createContext({mode:'varejo' as Mode,setMode:(_:Mode)=>{},items:[] as Item[],add:(_:string,quantity?:number)=>{},openSelection:()=>{},favorites:[] as string[],toggleFavorite:(_:string)=>{}});
 export const useShop=()=>useContext(Context);
 export function ShopProvider({children}:{children:ReactNode}) {
  const [mode,setModeState]=useState<Mode>('varejo'); const [items,setItems]=useState<Item[]>([]);const [favorites,setFavorites]=useState<string[]>([]);const [ready,setReady]=useState(false); const [drawer,setDrawer]=useState(false);const [age,setAge]=useState(false);const [copied,setCopied]=useState(false);const [notice,setNotice]=useState('');const pathname=usePathname();const dialogRef=useRef<HTMLDialogElement>(null);const ageRef=useRef<HTMLDialogElement>(null);
- useEffect(()=>{try{setModeState(localStorage.getItem('macumbiinha_mode')==='atacado'?'atacado':'varejo');const data=JSON.parse(localStorage.getItem('macumbiinha_selection')||'[]');if(Array.isArray(data))setItems(data.filter((x)=>products.some(p=>p.id===x.id)&&Number.isInteger(x.qty)&&x.qty>0&&x.qty<=999));const savedFavorites=JSON.parse(localStorage.getItem('macumbiinha_favorites')||'[]');if(Array.isArray(savedFavorites))setFavorites([...new Set(savedFavorites.filter((id):id is string=>typeof id==='string'&&products.some(p=>p.id===id)))]);setAge(localStorage.getItem('macumbiinha_age')!=='true');}catch{setAge(true);}setReady(true);},[]);
+ useEffect(()=>{try{setModeState(localStorage.getItem('macumbiinha_mode')==='atacado'?'atacado':'varejo');const data=JSON.parse(localStorage.getItem('macumbiinha_selection')||'[]');setItems(sanitizeSelection(data,products.map(p=>p.id)));const savedFavorites=JSON.parse(localStorage.getItem('macumbiinha_favorites')||'[]');setFavorites(sanitizeFavorites(savedFavorites,products.map(p=>p.id)));setAge(localStorage.getItem('macumbiinha_age')!=='true');}catch{setAge(true);}setReady(true);},[]);
  useEffect(()=>{if(ready){try{localStorage.setItem('macumbiinha_selection',JSON.stringify(items));}catch{}}},[items,ready]);
  useEffect(()=>{if(ready){try{localStorage.setItem('macumbiinha_favorites',JSON.stringify(favorites));}catch{}}},[favorites,ready]);
  useEffect(()=>{if(drawer)dialogRef.current?.showModal();else dialogRef.current?.close();},[drawer]);
@@ -21,8 +22,8 @@ export function ShopProvider({children}:{children:ReactNode}) {
  useEffect(()=>{setDrawer(false)},[pathname]);
  useEffect(()=>{if(notice){const t=setTimeout(()=>setNotice(''),2600);return()=>clearTimeout(t)}},[notice]);
  const setMode=(value:Mode)=>{setModeState(value);try{localStorage.setItem('macumbiinha_mode',value)}catch{}setNotice(value==='atacado'?'Você está no atacado. Sua seleção foi mantida.':'Você está no varejo. Sua seleção foi mantida.');};
- const add=(id:string,quantity=1)=>{if(!products.some(p=>p.id===id))return;const amount=Number.isInteger(quantity)?Math.max(1,Math.min(999,quantity)):1;setItems(old=>old.some(x=>x.id===id)?old.map(x=>x.id===id?{...x,qty:Math.min(999,x.qty+amount)}:x):[...old,{id,qty:amount}]);setNotice(amount===1?'Produto adicionado à sua seleção.':`${amount} unidades adicionadas à sua seleção.`);setCopied(false)};
- const toggleFavorite=(id:string)=>{if(!products.some(p=>p.id===id))return;setFavorites(old=>{const exists=old.includes(id);setNotice(exists?'Produto removido dos salvos.':'Produto salvo para consultar depois.');return exists?old.filter(x=>x!==id):[...old,id]})};
+ const add=(id:string,quantity=1)=>{if(!products.some(p=>p.id===id))return;const amount=Number.isInteger(quantity)?Math.max(1,Math.min(999,quantity)):1;setItems(old=>addToSelection(old,id,amount));setNotice(amount===1?'Produto adicionado à sua seleção.':`${amount} unidades adicionadas à sua seleção.`);setCopied(false)};
+ const toggleFavorite=(id:string)=>{if(!products.some(p=>p.id===id))return;setFavorites(old=>{const exists=old.includes(id);setNotice(exists?'Produto removido dos salvos.':'Produto salvo para consultar depois.');return toggleSavedItem(old,id)})};
  const selectedProducts=items.map(i=>({name:products.find(p=>p.id===i.id)?.name||i.id,quantity:i.qty}));
  const quote=createWhatsAppMessage(mode,{items:selectedProducts});
  const whatsappUrl=createWhatsAppUrl(store.whatsapp,mode,{items:selectedProducts});
