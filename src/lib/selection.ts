@@ -8,8 +8,8 @@ export function sanitizeSelection(value: unknown, validIds: readonly string[]): 
   for (const item of value) {
     if (!item || typeof item !== 'object') continue;
     const { id, qty } = item as { id?: unknown; qty?: unknown };
-    if (typeof id !== 'string' || !allowed.has(id) || !Number.isInteger(qty) || Number(qty) < 1) continue;
-    quantities.set(id, Math.min(MAX_QUANTITY, (quantities.get(id) || 0) + Number(qty)));
+    if (typeof id !== 'string' || !allowed.has(id) || typeof qty !== 'number' || !Number.isInteger(qty) || qty < 1) continue;
+    quantities.set(id, Math.min(MAX_QUANTITY, (quantities.get(id) || 0) + qty));
   }
   return Array.from(quantities, ([id, qty]) => ({ id, qty }));
 }
