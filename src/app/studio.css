@@ -70,7 +70,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,su
 .hero-v3 h1 em {font-family:Georgia,'Times New Roman',serif;font-weight:400;font-style:italic;letter-spacing:-.09em;color:var(--studio-lime)}
 .hero-period {color:#d8f390}
 [data-mode="atacado"] .hero-v3 h1 {font-size:clamp(53px,5.2vw,83px)}
-.hero-description {font-size:14px;line-height:1.85;color:#c9d6ca;max-width:405px;margin:0 0 30px}
+.hero-v3 .hero-description {font-size:14px;line-height:1.85;color:#d5e2d5;max-width:405px;margin:0 0 30px}
 .hero-v3 .hero-actions {display:flex;align-items:center;gap:19px;flex-wrap:wrap}
 .hero-primary {background:var(--studio-lime);color:#1c3025;min-height:54px;padding:14px 20px;gap:19px;box-shadow:0 0 0 1px #d8f390 inset;transition:background .22s ease,transform .22s ease,box-shadow .22s ease}
 .hero-primary:hover {background:#e6ffab;color:#18271b;box-shadow:0 7px 30px #b7eb6640;transform:translateY(-3px)}
