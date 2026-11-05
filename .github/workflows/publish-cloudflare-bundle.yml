@@ -31,14 +31,13 @@ jobs:
           path: out/
           if-no-files-found: error
           retention-days: 14
-      - name: Publicar atualização no Cloudflare Pages
-        if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
+      - name: Publicar atualização no Cloudflare Pages quando autorizado
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: 0c4c6e226af971ccaf0490eff6b90d60
-        run: npx wrangler pages deploy out --project-name macumbiinha --branch main --commit-hash "${GITHUB_SHA}"
-      - name: Avisar se credencial de deploy ainda não foi configurada
-        if: ${{ env.CLOUDFLARE_API_TOKEN == '' }}
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        run: echo "::warning::CLOUDFLARE_API_TOKEN ainda não configurado em Settings > Secrets and variables > Actions. Baixe o artefato macumbiinha-cloudflare-out para upload manual no Pages."
+        run: |
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "::warning::Deploy não executado: configure o segredo CLOUDFLARE_API_TOKEN em Settings > Secrets and variables > Actions deste repositório."
+            exit 0
+          fi
+          npx --yes wrangler@4 pages deploy out --project-name macumbiinha --branch main --commit-hash "${GITHUB_SHA}"
