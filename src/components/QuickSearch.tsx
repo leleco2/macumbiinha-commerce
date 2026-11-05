@@ -4,8 +4,7 @@ import {usePathname} from 'next/navigation';
 import {useEffect,useMemo,useState} from 'react';
 import {Search,ArrowRight,ArrowUpRight} from 'lucide-react';
 import {categories,products} from '@/data/products';
-
-const normalize=(input:string)=>input.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+import {searchCatalog} from '@/lib/catalogSearch';
 
 /** Accessible, lightweight catalog search; all suggestions come from local store data. */
 export default function QuickSearch(){
@@ -14,9 +13,8 @@ export default function QuickSearch(){
  const pathname=usePathname();
  useEffect(()=>{setFocused(false);setQuery('')},[pathname]);
  const matches=useMemo(()=>{
-   const needle=normalize(query.trim());
-   if(needle.length<2)return [];
-   return products.filter(p=>normalize([p.name,p.description,...p.tags].join(' ')).includes(needle)).slice(0,4);
+   if(query.trim().length<2)return [];
+   return searchCatalog(products,query,Object.fromEntries(categories.map(c=>[c.id,c.name]))).slice(0,4);
  },[query]);
  const show=focused&&query.trim().length>=2;
  return <div className="quick-search" onBlur={event=>{if(!event.currentTarget.contains(event.relatedTarget as Node))setFocused(false)}}>
