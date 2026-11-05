@@ -33,6 +33,19 @@ Edite `src/data/products.ts`. Coloque fotos reais em `public/produtos/` e defina
 
 Preencha `src/data/store.ts` com WhatsApp (DDI + DDD + número), e-mail, razão social, CNPJ e endereço verificados. Sem WhatsApp, o site não envia visitantes para números de exemplo. Revise as informações comerciais e de privacidade antes de habilitar vendas.
 
+## Atendimento pelo WhatsApp
+
+O canal configurado é **+55 21 96719-9869**, em `src/data/store.ts`. O catálogo abre `wa.me` com mensagem pré-preenchida conforme o perfil ativo:
+
+- **Varejo:** atendimento, preços, disponibilidade e entrega.
+- **Atacado:** consulta sobre revenda, preços por quantidade, pedido mínimo e condições de entrega.
+- **Seleção:** inclui os nomes e quantidades escolhidos.
+- **Produto:** inclui o nome do produto exibido.
+
+O link está disponível na página inicial, página de produto, seleção, área de atacado, atendimento, rodapé e botão flutuante responsivo. O site não dispara mensagens automaticamente: o visitante revisa e envia pelo próprio WhatsApp.
+
+As mensagens e a montagem do link ficam em `src/lib/whatsapp.ts`. Execute `npm test` para os testes de mensagem e `npm run build` para validar a exportação estática.
+
 ## Publicação
 
 Projeto Cloudflare Pages `macumbiinha`, conta da loja, branch `main`, diretório `out/`.

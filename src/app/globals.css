@@ -9,3 +9,22 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
 
 .real-product-image{width:100%;height:100%;object-fit:contain;padding:20px;transition:transform .3s}.product-card:hover .real-product-image{transform:scale(1.05)}
+
+
+/* Atendimento contextual via WhatsApp: varejo e atacado */
+.whatsapp-float{position:fixed;right:24px;bottom:24px;z-index:70;display:inline-flex;align-items:center;justify-content:center;gap:11px;padding:14px 19px;background:#226448;color:#fff;border:1px solid #d3ead4;border-radius:100px;box-shadow:0 8px 30px #132d2080;font-size:12px;font-weight:700;line-height:1.2;transition:transform .2s,background .2s,box-shadow .2s}
+.whatsapp-float:hover{background:#17583b;transform:translateY(-3px);box-shadow:0 12px 34px #132d2080}
+.whatsapp-float:focus-visible{outline:3px solid var(--lime);outline-offset:3px}
+.whatsapp-float svg{flex-shrink:0}
+.whatsapp-drawer-button{background:#226448;color:#fff}
+.whatsapp-drawer-button:hover{background:#17583b}
+.wholesale-contact{display:inline-flex;align-items:center;gap:10px;margin-top:18px;margin-left:0;color:var(--lime);font-weight:600;font-size:12px;border-bottom:1px solid #d1ef8390;padding-bottom:6px}
+.wholesale-contact:hover{color:#e2ffa0}
+.detail-copy>.whatsapp-product-button{width:100%;margin-top:12px}
+.wholesale-intro .wholesale-info-whatsapp{margin-top:12px;max-width:100%}
+@media(max-width:600px){
+ .whatsapp-float{right:16px;bottom:16px;width:55px;height:55px;padding:0;border-radius:50%;box-shadow:0 7px 24px #132d2080}
+ .whatsapp-float span{display:none}
+ .wholesale-contact{display:flex;width:max-content;max-width:100%;font-size:11px}
+ .wholesale-intro .wholesale-info-whatsapp{font-size:11px;padding:14px}
+}

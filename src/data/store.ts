@@ -1,6 +1,6 @@
 export const store = {
   name: 'Macumbiinha',
-  whatsapp: '', // Preencha com DDI + DDD + número, somente dígitos.
+  whatsapp: '5521967199869', // Canal oficial informado pela loja (DDI 55 + DDD 21).
   email: '',
   companyName: '',
   cnpj: '',
