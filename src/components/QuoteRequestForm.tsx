@@ -17,7 +17,7 @@ type TurnstileAPI={
 type WindowWithTurnstile=Window&{turnstile?:TurnstileAPI};
 
 export default function QuoteRequestForm(){
- const {mode,items,catalog:products}=useShop();
+ const {mode,items,catalog:products,siteSettings}=useShop();
  const [config,setConfig]=useState<PublicConfig|null>(null);
  const [state,setState]=useState<'loading'|'ready'|'offline'|'sending'|'sent'>('loading');
  const [token,setToken]=useState('');
@@ -105,7 +105,7 @@ export default function QuoteRequestForm(){
        <span className="eyebrow">ATENDIMENTO PERSONALIZADO</span>
        <h2>Conte o que você procura.</h2>
        {state==='loading'&&<p className="crm-bridge-note">Verificando a conexão segura com nosso sistema...</p>}
-       {state==='offline'&&<div className="crm-bridge-offline"><ShieldCheck size={26}/><h3>Formulário online ainda não ativado.</h3><p>O atendimento continua disponível pelo WhatsApp enquanto configuramos a integração segura.</p><a className="button" href={createWhatsAppUrl(store.whatsapp,mode,{items:choice.map(({item,product})=>({name:product!.name,quantity:item.qty}))})} target="_blank" rel="noopener noreferrer"><MessageCircle size={17}/> Conversar pelo WhatsApp</a></div>}
+       {state==='offline'&&<div className="crm-bridge-offline"><ShieldCheck size={26}/><h3>Formulário online ainda não ativado.</h3><p>O atendimento continua disponível pelo WhatsApp enquanto configuramos a integração segura.</p><a className="button" href={createWhatsAppUrl(siteSettings.whatsapp||store.whatsapp,mode,{items:choice.map(({item,product})=>({name:product!.name,quantity:item.qty}))})} target="_blank" rel="noopener noreferrer"><MessageCircle size={17}/> Conversar pelo WhatsApp</a></div>}
        {(state==='ready'||state==='sending')&&<form className="crm-request-form" onSubmit={submit}>
         <label>Seu nome <span>*</span><input type="text" value={name} onChange={e=>setName(e.target.value)} required minLength={2} maxLength={120} autoComplete="name" placeholder="Como podemos chamar você?"/></label>
         <div className="crm-request-fields">
