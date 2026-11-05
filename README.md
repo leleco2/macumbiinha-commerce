@@ -25,32 +25,23 @@ O build gera `out/`. O script de desenvolvimento aceita os parâmetros do ambien
 
 O seletor varejo/atacado persiste no navegador. A seleção aceita quantidades e pode ser copiada; não é checkout e não reserva estoque.
 
-## Produtos e fotos
+## Integração com o CRM (fonte principal de dados)
 
-Edite `src/data/products.ts`. Coloque fotos reais em `public/produtos/` e defina `image: "/produtos/nome.webp"` no produto. Sem foto, o site exibe uma ilustração identificada como representativa da categoria.
+**O catálogo publicado é gerenciado no CRM**, não diretamente neste arquivo. O navegador consulta `https://macumbiinha-crm.maodeouro-nexa.workers.dev/api/public/catalog`, que informa os produtos, fotos, preços, publicação e disponibilidade. A resposta é atualizada periodicamente. Produtos cadastrados depois do build usam a página dinâmica estática `/item/?sku=...`.
 
-## Dados da empresa
+- No CRM, acesse **Loja online** para cadastrar/editar, publicar/ocultar, anexar fotos, ajustar preços e registrar movimentações de estoque.
+- As 34 referências que já apareciam na loja foram importadas para o D1, **sem supor preços ou quantidades**. Com preço igual a zero, a interface mostra "Sob consulta". Com estoque zero, mostra indisponibilidade.
+- O catálogo está em modo de orçamento/atendimento; adicionar à seleção não cobra nem reserva produtos.
+- Os textos principais e o WhatsApp podem ser ajustados no CRM, em **Loja online → Configurações**.
+- Se o CRM estiver temporariamente indisponível, o site avisa que os dados podem estar desatualizados. A cópia estática antiga é usada somente como fallback de disponibilidade visual.
+- Os dados de custo/fornecedores e notas fiscais são privados no CRM e nunca são enviados ao catálogo público.
 
-Preencha `src/data/store.ts` com WhatsApp (DDI + DDD + número), e-mail, razão social, CNPJ e endereço verificados. Sem WhatsApp, o site não envia visitantes para números de exemplo. Revise as informações comerciais e de privacidade antes de habilitar vendas.
-
-## Atendimento pelo WhatsApp
-
-O canal configurado é **+55 21 96719-9869**, em `src/data/store.ts`. O catálogo abre `wa.me` com mensagem pré-preenchida conforme o perfil ativo:
-
-- **Varejo:** atendimento, preços, disponibilidade e entrega.
-- **Atacado:** consulta sobre revenda, preços por quantidade, pedido mínimo e condições de entrega.
-- **Seleção:** inclui os nomes e quantidades escolhidos.
-- **Produto:** inclui o nome do produto exibido.
-
-O link está disponível na página inicial, página de produto, seleção, área de atacado, atendimento, rodapé e botão flutuante responsivo. O site não dispara mensagens automaticamente: o visitante revisa e envia pelo próprio WhatsApp.
-
-As mensagens e a montagem do link ficam em `src/lib/whatsapp.ts`. Execute `npm test` para os testes de mensagem e `npm run build` para validar a exportação estática.
+O arquivo `src/data/products.ts` serve de referência legada e fallback para páginas já geradas; alterações de catálogo devem ocorrer no CRM.
 
 ## Publicação
 
-Projeto Cloudflare Pages `macumbiinha`, conta da loja, branch `main`, diretório `out/`.
-A publicação usa upload direto. A integração Git da conta retornou erro 8000011; commits no GitHub não geram deploy automático.
+O site é compilado por `.github/workflows/publish-cloudflare-bundle.yml`. A **publicação em produção** é acionada a partir do repositório `leleco2/macumbiinha-crm`, workflow `.github/workflows/deploy-storefront.yml`, que utiliza o segredo `CLOUDFLARE_API_TOKEN` com a permissão **Cloudflare Pages: Edit** para a mesma conta. Os builds do site e as publicações da loja são operações separadas. O domínio continua `https://macumbiinha.pages.dev`.
 
 ## Limites atuais
 
-Não há pagamento, controle de estoque, login de cliente ou painel administrativo. Preços, frete, condições de atacado e políticas operacionais precisam ser fornecidos pela loja. Nenhuma informação comercial foi inventada para preencher esses campos.
+Não há checkout de pagamento automatizado nem emissão fiscal pela SEFAZ. O CRM permite arquivar notas PDF/XML de forma privada, mas não autoriza, transmite ou cancela NF-e. Estoque é movimentado no CRM, e pedidos confirmados no ERP usam os gatilhos já existentes. A cotação pelo site não reserva estoque.
