@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./refinement.css";
+import "./studio.css";
 import { ShopProvider } from "@/components/Shop";
 
 export const metadata: Metadata = {
