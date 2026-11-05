@@ -1,10 +1,15 @@
 /** Public, read-only CRM bridge. Never put administrator credentials in the storefront. */
 export const CRM_BASE_URL = 'https://macumbiinha-crm.maodeouro-nexa.workers.dev';
 
+export type PublicCatalogVariant = {
+ id: string; sku: string; label: string; quantity: number; available: boolean;
+ retail_cents: number; wholesale_cents: number; image_url?: string; gallery?: string[];
+};
 export type PublicCatalogItem = {
   id: string; slug: string; sku: string; name: string; category: string; description: string;
   tags: string[]; image_url: string; featured: boolean; for_wholesale: boolean;
   retail_cents: number; wholesale_cents: number; available: boolean; quantity: number;
+  gallery?: string[]; variants?: PublicCatalogVariant[];
   updated_at?: string;
 };
 export type PublicSiteSettings = { announcement: string; hero_title: string; hero_subtitle: string; whatsapp: string };
