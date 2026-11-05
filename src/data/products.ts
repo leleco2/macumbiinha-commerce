@@ -3,7 +3,13 @@ export type Product = {
   name: string;
   category: string;
   description: string;
-  image?: string; // Exemplo: /produtos/foto.webp (arquivo em public/produtos)
+  image?: string; // Public HTTPS image managed by CRM or local fallback.
+  sku?: string;
+  retail_cents?: number;
+  wholesale_cents?: number;
+  quantity?: number;
+  available?: boolean;
+  source?: 'crm' | 'local';
   tags: string[];
   featured?: boolean;
   forWholesale?: boolean; // true = better for atacado
